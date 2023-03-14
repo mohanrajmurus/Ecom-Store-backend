@@ -1,4 +1,4 @@
-const { createUser, loginUser, updateUserDetails } = require("../controllers/userController");
+const { createUser, loginUser, emailVerification } = require("../controllers/userController");
 const express = require("express");
 
 const router = express.Router();
@@ -7,7 +7,6 @@ const router = express.Router();
 router.post("/register", createUser);
 //login user
 router.post("/login", loginUser);
+router.post('/emailverify',emailVerification)
 
-
-router.put("/update/:id",updateUserDetails)
 module.exports = router;

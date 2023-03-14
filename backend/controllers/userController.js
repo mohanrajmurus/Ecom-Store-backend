@@ -1,6 +1,6 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
-const { findOne } = require("../models/UserModel");
+const nodemailer = require("nodemailer");
 //Register User
 const createUser = async (req, res) => {
   try {
@@ -30,7 +30,31 @@ const createUser = async (req, res) => {
     console.error(error);
   }
 };
-
+//email verrification
+const emailVerification = async (req, res) => {
+  const randNum = Math.floor(100000 + Math.random() * 900000);
+  const { email } = req.body;
+  const oldUser = await User.findOne({ email });
+  if (oldUser)
+    return res.status(409).send("User Account Already Exist.Please Login");
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "mohanraj.nothing@gmail.com",
+      pass: "bsswhzllbqixirhu",
+    },
+  });
+  const mailConfigurations = {
+    from: "mohanraj.nothing@gmail.com",
+    to: email,
+    subject: "Email-Verification",
+    text: `Email Verification OTP is ${randNum}`,
+  };
+  transporter.sendMail(mailConfigurations, (error) => {
+    if (error) throw Error(error);
+    res.json(randNum);
+  });
+};
 //Login User
 const loginUser = async (req, res) => {
   try {
@@ -55,12 +79,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-const updateUserDetails = async (req, res) => {
-  const { cart } = req.body;
-  const user = await User.findOne({email:req.params.id})
-  user.cart = cart
-  const updateUser = await user.save()
-  res.json(updateUser)
-};
-
-module.exports = { createUser, loginUser, updateUserDetails };
+module.exports = { createUser, loginUser, emailVerification };
