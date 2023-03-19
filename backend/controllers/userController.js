@@ -79,5 +79,22 @@ const loginUser = async (req, res) => {
     console.log(error);
   }
 };
-
-module.exports = { createUser, loginUser, emailVerification };
+const updateCart = async(req,res)=>{
+  const id =req.params.id;
+  //console.log(req.body.id);
+  const user = await User.findById(id)
+  user.cart.push(req.body.id)
+  const upUser = await user.save()
+  if(upUser) return res.status(200).json(upUser);
+  else return;
+}
+//remove product from cart
+const removeProduct = async(req,res)=>{
+  console.log(req.body.id)
+  const user = await User.findById(req.params.id)
+  user.cart = user.cart.filter(item => item !== req.body.id)
+  const updatedUser = await user.save();
+  if(updatedUser) return res.status(200).json(updatedUser);
+  else return;
+}
+module.exports = { createUser, loginUser, emailVerification,updateCart ,removeProduct};

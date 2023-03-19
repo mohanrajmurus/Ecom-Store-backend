@@ -4,7 +4,7 @@ const cors = require("cors");
 const connectMongoDB = require("./config/db");
 const router = require('./routes/userRoutes')
 const app = express();
-dotenv.config();
+dotenv.config({ path: '.env.local' });
 const { PORT, MONGO_URI } = process.env;
 
 //connect database
