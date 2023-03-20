@@ -5,9 +5,9 @@ const nodemailer = require("nodemailer");
 const createUser = async (req, res) => {
   try {
     //Get User Input
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password, mobileNum} = req.body;
     //Validate user input
-    if (!email || !fullName || !password)
+    if (!email || !fullName || !password ||!mobileNum)
       res.status(400).send("All inputs are required");
 
     //check  if user already exist on database
@@ -22,6 +22,7 @@ const createUser = async (req, res) => {
       fullName,
       email: email.toLowerCase(),
       password: encryptedPassword,
+      mobileNum
     });
 
     //return new User
@@ -90,11 +91,22 @@ const updateCart = async(req,res)=>{
 }
 //remove product from cart
 const removeProduct = async(req,res)=>{
-  console.log(req.body.id)
+  //console.log(req.body.id)
   const user = await User.findById(req.params.id)
   user.cart = user.cart.filter(item => item !== req.body.id)
   const updatedUser = await user.save();
   if(updatedUser) return res.status(200).json(updatedUser);
   else return;
 }
-module.exports = { createUser, loginUser, emailVerification,updateCart ,removeProduct};
+//Add address
+const addAddress = async(req,res)=>{
+  const id =req.params.id;
+  //console.log(req.body.id);
+  const user = await User.findById(id)
+  console.log(req.body.delAddress);
+  user.address= Object.assign({},req.body.delAddress)
+  const upUser = await user.save()
+  if(upUser) return res.status(200).json(upUser);
+  else return;
+}
+module.exports = { createUser, loginUser, emailVerification,updateCart ,removeProduct,addAddress};
