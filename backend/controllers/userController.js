@@ -103,8 +103,8 @@ const addAddress = async(req,res)=>{
   const id =req.params.id;
   //console.log(req.body.id);
   const user = await User.findById(id)
-  console.log(req.body.delAddress);
-  user.address= Object.assign({},req.body.delAddress)
+  console.log(req.body);
+  user.address= Object.assign({},req.body)
   const upUser = await user.save()
   if(upUser) return res.status(200).json(upUser);
   else return;

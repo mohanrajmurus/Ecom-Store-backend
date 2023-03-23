@@ -9,8 +9,12 @@ const userSchema = new Schema({
   token: { type: String },
   cart: { type: Array, default: null },
   address: {
-    type: Object,
-    default:Object
+    doorNo:{type:String,default:null},
+    streetName:{type:String,default:null},
+    location:{type:String,default:null},
+    city:{type:String,default:null},
+    landmark:{type:String,default:null},
+    pincode:{type:String,default:null}
   },
 });
 
