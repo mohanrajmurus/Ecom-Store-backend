@@ -84,6 +84,7 @@ const updateCart = async(req,res)=>{
   const id =req.params.id;
   //console.log(req.body.id);
   const user = await User.findById(id)
+  //console.log(user)
   user.cart.push(req.body.id)
   const upUser = await user.save()
   if(upUser) return res.status(200).json(upUser);
